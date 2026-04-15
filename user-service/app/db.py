@@ -5,4 +5,10 @@ from app.core.config import MONGO_URI
 
 async def init_db():
     client = AsyncIOMotorClient(MONGO_URI)
-    await init_beanie(database = client.eventflow, document_models=[User])
+
+    db = client.get_database("eventflow")   # ✅ safest way
+
+    await init_beanie(
+        database=db,
+        document_models=[User]
+    )

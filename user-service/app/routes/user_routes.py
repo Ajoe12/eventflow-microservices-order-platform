@@ -8,6 +8,7 @@ router = APIRouter()
 
 @router.post("/signup")
 async def signup(user: UserCreate):
+    print(user)
     existing = await User.find_one(User.email == user.email)
     if existing:
         raise HTTPException(status_code=400, detail="User exists")

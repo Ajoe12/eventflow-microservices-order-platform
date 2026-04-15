@@ -1,7 +1,7 @@
 from passlib.context import CryptContext
 from authlib.jose import jwt
 import datetime
-from app.core.config import SECRET_KEY, ALGORITHM
+from app.core.config import ALGORITHM, SECRET_KEY
 
 pwd_context = CryptContext(schemes=["bcrypt"])
 
