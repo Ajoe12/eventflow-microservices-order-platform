@@ -7,6 +7,8 @@ security = HTTPBearer()
 def get_current_user(token=Depends(security)):
     try:
         return decode_token(token.credentials)
+    except HTTPException as e:
+        raise e
     except Exception:
         raise HTTPException(status_code=401, detail="Invalid token")
 

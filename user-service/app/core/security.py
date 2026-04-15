@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from passlib.context import CryptContext
 from authlib.jose import jwt
 import datetime
@@ -18,4 +19,9 @@ def create_token(data: dict):
     return jwt.encode(header, payload, SECRET_KEY)
 
 def decode_token(token):
-    return jwt.decode(token, SECRET_KEY)
+    try:
+        claims = jwt.decode(token, SECRET_KEY)
+        claims.validate()
+    except Exception:
+        raise HTTPException(status_code=403,detail="Invalid or Expired Token")
+    return claims
