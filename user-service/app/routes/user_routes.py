@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends
 from app.schemas import UserCreate, UserLogin
 from app.models import User
-from app.auth import hash_password, verify_password, create_token
-from app.dependencies import require_admin
+from app.core.security import hash_password, verify_password, create_token
+from app.dependencies.auth import require_admin
 
 router = APIRouter()
 
