@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from passlib.context import CryptContext
 from authlib.jose import jwt
-import datetime
+from datetime import datetime, timedelta, timezone
 from app.core.config import ALGORITHM, SECRET_KEY
 
 pwd_context = CryptContext(schemes=["bcrypt"])
@@ -15,7 +15,7 @@ def verify_password(password, hashed):
 def create_token(data: dict):
     header = {"alg": ALGORITHM}
     payload = data.copy()
-    payload["exp"] = int((datetime.datetime.utcnow() + datetime.timedelta(hours=1)).timestamp())
+    payload["exp"] = datetime.now(timezone.utc) + timedelta(hours=1)
     return jwt.encode(header, payload, SECRET_KEY)
 
 def decode_token(token):
