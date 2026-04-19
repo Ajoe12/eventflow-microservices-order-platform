@@ -1,0 +1,14 @@
+from fastapi import APIRouter, Request
+from app.services.proxy_service import proxy_request
+from app.core.config import ITEM_SERVICE_URL
+
+router = APIRouter(prefix="/items", tags=["Items"])
+
+
+@router.api_route("/{path:path}", methods=["GET", "POST", "PUT", "DELETE"])
+async def proxy_items(request: Request, path: str):
+    return await proxy_request(
+        request,
+        base_url=ITEM_SERVICE_URL,
+        path=f"/{path}"
+    )
