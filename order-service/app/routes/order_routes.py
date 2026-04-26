@@ -14,6 +14,7 @@ async def create_order(
     token: HTTPAuthorizationCredentials = Depends(security),
     user=Depends(get_current_user)
 ):
+    print("in route")
     try:
         return await order_service.create_order(
             user_id=user.get("user_id"),

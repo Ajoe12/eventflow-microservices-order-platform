@@ -7,14 +7,18 @@ from app.models import Order
 from app.core.config import ITEM_SERVICE_URL
 from app.utils.http_client import get_item
 
+#kafka
+from app.utils.kafka_producer import send_order_event
+
 
 async def create_order(user_id: str, data,token:str):
     total_price = 0
     validated_items = []
-
+    # print("in service")
     for item in data.items:
         # 🔹 Call item service
         item_data = await get_item(item.item_id, ITEM_SERVICE_URL,token)
+        print(item_data)
 
         if not item_data:
             raise Exception(f"Item {item.item_id} not found")
@@ -42,6 +46,8 @@ async def create_order(user_id: str, data,token:str):
     )
 
     await order.insert()
+    print("insert success")
+    send_order_event(order)
     return order
 
 
